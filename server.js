@@ -3,13 +3,17 @@ const http = require("http");
 const path = require("path");
 const socketio = require("socket.io");
 const emoji = require("node-emoji");
+const cors = require("cors");
+const helmet = require("helmet");
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-app.get("/", (req, res) => res.sendFile(__dirname + "/public/chat.html"));
+app.use(cors());
+app.use(helmet());
 app.use(express.static(path.join(__dirname, "public")));
+app.get("*", (req, res) => res.sendFile(__dirname + "/public/index.html"));
 
 const users = {};
 
